@@ -9,7 +9,7 @@ var colors = require('colors');
 var port = process.env.PORT || 3000;
 
 io.on('connection', function(socket) {
-  
+  console.log('cliente conectou');
 });
 
 server.listen(port, function() {
