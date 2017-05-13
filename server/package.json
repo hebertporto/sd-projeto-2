@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/hebertporto/sd-projeto-2/issues"
   },
-  "homepage": "https://github.com/hebertporto/sd-projeto-2#readme"
+  "homepage": "https://github.com/hebertporto/sd-projeto-2#readme",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "cors": "^2.8.3",
+    "express": "^4.15.2",
+    "socket.io": "^2.0.1"
+  }
 }
