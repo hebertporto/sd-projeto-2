@@ -1,40 +1,98 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
+   
+    <title>Client Chat - Projeto S.D - Hebert Porto</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <style>
+        #chat_box {
+          float: left;
+          height: 300px;
+          overflow-x: hidden;
+          overflow-y: auto;
+          width: 100%;
+        }
+        #messages li:nth-child(odd) { background: #eee; }
+      </style>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+    <nav class="light-blue lighten-1" role="navigation">
+      <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Chat - S.D - Hebert Porto</a>
+      </div>
+    </nav>
+    <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+          <div class="col s12 m3">
+          </div>
+
+          <div class="col s12 m6">
+            <div class="icon-block">
+              <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+              <div id="chat_box">
+                <ul id="messages"></ul>
+              </div>
+              <input id="m" autocomplete="off" placeholder="Digite aqui sua mensagem" />
+              <button class="waves-effect waves-light btn" id="send">Enviar</button>
+            </div>
+          </div>
+
+          <div class="col s12 m3">
+          </div>
+        </div>
+
+      </div>
+      <br><br>
+
+      <div class="section">
+
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script> 
     <script src="scripts/socket.io.js"></script>
     <script>
       var socket = io('http://localhost:3000');
           socket.on('connect', function(socket){
             console.log('conectou no server');
           });
-          socket.on('event', function(data){});
-          socket.on('disconnect', function(){});
 
-          $('form').submit(function(){
-             socket.emit('chat message', $('#m').val());
-          $('#m').val('');
-          return false;
-           });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
-          window.scrollTo(0, document.body.scrollHeight);
+
+          var button = document.getElementById("send");
+          button.onclick = function (event) {
+            var msg = document.getElementById('m');
+            socket.emit('message to server', {msg: msg.value });
+          }
+
+        socket.on('message to all', function(data){
+          var ul = document.getElementById("messages");
+          var li = document.createElement("li");
+          li.appendChild(document.createTextNode(data.msg));
+          ul.appendChild(li);
+          var msg = document.getElementById('m');
+          msg.value = '';
+          window.scrollTo(0, document.getElementById("chat_box"));
+        });
+
+        socket.on('message from server', function(data){
+          var ul = document.getElementById("messages");
+          var li = document.createElement("li");
+          li.appendChild(document.createTextNode(data.msg));
+          ul.appendChild(li);
+          var msg = document.getElementById('m');
+          msg.value = '';
+          window.scrollTo(0, document.getElementById("chat_box"));
         });
     </script> 
   </body>
