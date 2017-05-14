@@ -36,6 +36,8 @@
           <div class="col s12 m6">
             <div class="icon-block">
               <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+              <label>Informe o Login</label>
+              <input id="login" autocomplete="off" placeholder="Informe o Login" />
               <div id="chat_box">
                 <ul id="messages"></ul>
               </div>
@@ -72,7 +74,8 @@
           var button = document.getElementById("send");
           button.onclick = function (event) {
             var msg = document.getElementById('m');
-            socket.emit('message to server', {msg: msg.value });
+            var login = document.getElementById('login');
+            socket.emit('message to server', {login: login.value, msg: msg.value });
           }
 
         socket.on('message to all', function(data){

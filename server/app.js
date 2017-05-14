@@ -10,12 +10,12 @@ var port = process.env.PORT || 3000;
 
 io.on('connection', function(socket) {
   socket.on('message to server', function(data){
-    console.log('mensagem', data.msg);
-     socket.broadcast.emit('message to all', { msg: data.msg });
-     socket.emit('message from server', { msg: data.msg });
-     
+     var date = new Date();
+     var msgFormatada = data.login + ' ' + date.getHours() + 'h' + date.getMinutes()+ ': ' + data.msg;
+     socket.broadcast.emit('message to all', { msg: msgFormatada });
+     msgFormatada = 'Você ' + date.getHours() + 'h' + date.getMinutes()+ ': ' + data.msg;
+     socket.emit('message from server', { msg: msgFormatada});
   });
-  console.log('cliente conectou');
 });
 
 server.listen(port, function() {
